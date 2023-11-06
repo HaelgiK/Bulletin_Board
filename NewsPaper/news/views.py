@@ -30,6 +30,7 @@ class PostList(ListView):
     template_name = 'news.html'
     context_object_name = 'news'
     paginate_by = 10
+    form_class = PostForm
 
 
     # def get_queryset(self):
@@ -46,8 +47,23 @@ class PostList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 #        context['filterset'] = self.filterset
-        context['time_now'] = datetime.utcnow()
+        context['form'] = self.form_class()
+        context['current_time'] = timezone.localtime(timezone.now())
+#        context['current_time'] = timezone.now()
+        context['timezones'] = pytz.common_timezones
+#        context['time_now'] = datetime.utcnow()
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if request.method == 'POST':
+            request.session['django_timezone'] = request.POST['timezone']
+            return redirect('post_list')
+
+        if form.is_valid():
+            form.save()
+
+        return super().get(request, *args, **kwargs)
 
 
 class PostDetail(DetailView):
@@ -71,7 +87,13 @@ class SearchNews(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        context['current_time'] = timezone.now()
+        context['timezones'] = pytz.common_timezones
         return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('search_news')
 
 # Добавляем новое представление для создания новостей.
 class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -137,6 +159,8 @@ class CategoryListView(ListView):
         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
         # Передаем категорию в шаблон
         context['category'] = self.category
+        context['current_time'] = timezone.now()
+        context['timezones'] = pytz.common_timezones
         return context
 
 

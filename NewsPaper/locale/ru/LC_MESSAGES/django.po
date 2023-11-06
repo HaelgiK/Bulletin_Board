@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-30 20:13+0100\n"
+"POT-Creation-Date: 2023-10-31 11:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,13 +20,27 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\news\filters.py:47
-msgid "Header"
-msgstr "Заголовок"
+#: .\news\filters.py:14
+#, fuzzy
+#| msgid "category name"
+msgid "Category"
+msgstr "Категория"
 
-#: .\news\filters.py:48
+#: .\news\filters.py:15 .\news\filters.py:24
+msgid "any"
+msgstr "все"
+
+#: .\news\filters.py:21 .\news\filters.py:55
 msgid "Author"
 msgstr "Автор"
+
+#: .\news\filters.py:31
+msgid "Published after"
+msgstr "Опубликовано после"
+
+#: .\news\filters.py:37 .\news\filters.py:54
+msgid "Header"
+msgstr "Заголовок"
 
 #: .\news\models.py:35
 msgid "category name"
@@ -71,7 +85,7 @@ msgstr "Все новости на сегодня"
 
 #: .\templates\news.html:33
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: .\templates\news.html:39 .\templates\search.html:37
 msgid "Title new"
