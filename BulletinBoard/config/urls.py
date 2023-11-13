@@ -23,10 +23,10 @@ urlpatterns = [
     # путь к панели администратора
     path('admin/', admin.site.urls),
     # перенаправление корневой страницы в приложение protect
-    path('', include('protect.urls')),
+    path('', include('board.urls')),
     path('sign/', include('sign.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
-    path('post/', include('board.urls')),
+    path('posts/', include('board.urls')),
     # перенаправление на ‘accounts/’ для всех URL,
     # которые будут управляться подключенным пакетом
     path('accounts/', include('allauth.urls')),

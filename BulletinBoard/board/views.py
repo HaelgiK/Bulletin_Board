@@ -23,7 +23,7 @@ class PostList(ListView):
     model = Post
     # Поле, которое будет использоваться для сортировки объектов
     ordering = '-date_created'
-    template_name = 'post.html'
+    template_name = 'posts.html'
     context_object_name = 'posts'
     paginate_by = 10
 
@@ -47,7 +47,7 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
     def get_success_url(self):
-        return reverse('bill', kwargs={'pk': self.object.pk})
+        return reverse('post', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
 
