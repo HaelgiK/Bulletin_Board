@@ -1,3 +1,4 @@
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -42,7 +43,7 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'post.html'
+    template_name = 'post1.html'
     form_class = PostForm
     context_object_name = 'post'
 
@@ -52,8 +53,9 @@ class PostDetail(DetailView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
-        comments = Comment.objects.filter(accepted=True, bill_id=self.kwargs['pk']).order_by('time_create')
+        comments = Comment.objects.filter(id=self.kwargs['pk']).order_by('time_create')
         context['comments'] = comments
+
 
         return context
 
@@ -140,20 +142,28 @@ class PostDetailUser(LoginRequiredMixin, DetailView):
 
 class CommentList(ListView):
     model = Comment
-    template_name = 'comment.html'
+    template_name = 'comments.html'
     ordering = '-time_create'
     context_object_name = 'comment_list'
 
-    def get_queryset(self):
-        # Достаем из именованных аргументов (*kwargs) нашего представления наш 'pk'
-        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = Post.objects.filter(post_category=self.category).order_by('-date_created')
-        return queryset
+    # def get_queryset(self):
+    #     # self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+    #     # queryset = Post.objects.filter(post_category=self.category).order_by('-date_created')
+    #     # return queryset
+    #     queryset = super().get_queryset()
+    #     self.filterset = CommentFilter(self.request.GET, queryset)
+    #     return self.filterset.qs
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # Добавляем в контекст объект фильтрации.
+    #     context['filterset'] = self.filterset
+    #     return context
 
 
 class CommentDetail(DetailView):
     model = Comment
-    template_name = 'comment.html'
+    template_name = 'comments.html'
     context_object_name = 'comment'
 
 
@@ -172,7 +182,7 @@ class CommentCreate(LoginRequiredMixin, CreateView):
 class CommentDelete(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'comment_delete.html'
-    success_url = reverse_lazy('user_clicks')
+    success_url = reverse_lazy('user_comments')
 
 
 @login_required
@@ -181,7 +191,7 @@ def user_posts(request, pk):
     current_user = request.user
     # Получаем текущий пост
     posts = Post.objects.filter(user=current_user).order_by('-time_create')
-    return render(request, 'user_posts.html', {'posts': posts})
+    return render(request, 'post_user.html', {'posts': posts})
 
 
 @login_required
@@ -199,7 +209,7 @@ def user_comments(request):
         if selected_post_id:
             posts = posts.filter(post__id=selected_post_id)
 
-    return render(request, 'user_posts.html', {'posts': posts, 'comments': comments, 'selected_bill_id': selected_post_id})
+    return render(request, 'post_user.html', {'posts': posts, 'comments': comments, 'selected_bill_id': selected_post_id})
 
 
 @login_required
@@ -208,7 +218,7 @@ def accept_comment(request, pk):
     comment.accepted = True
     comment.save()
     comment.send_accepted_email()
-    return HttpResponseRedirect(reverse('user_clicks'))
+    return HttpResponseRedirect(reverse('user_comments'))
 
 
 class Index(View):

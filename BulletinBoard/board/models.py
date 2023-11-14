@@ -26,24 +26,26 @@ class Post(models.Model):
         return f'{self.header}: {self.content[:124]}'
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
+        return reverse('post', args=[str(self.id)])
 
 
 class Comment(models.Model):
-    comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     text = models.TextField()
     time_create = models.DateTimeField(auto_now_add=True)
-    comment = models.BooleanField(default=False)
+#    comment = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
 
     # def send_email(self):
     #     subject = 'Отклик на объявление'
-    #     message = 'Здравствуйте!\n\nНа ваше объявление "{}" появился новый отклик.\n\nС уважением,\nВаш сайт.'.format(
-    #         self.post.header)
-    #     from_email = 'Nikon1987-63rus@yandex.ru'
+    #     message = 'Здравствуйте!\n\n Новый отклик на ваше объявление "{self.post}".
+    #     from_email = settings.DEFAULT_FROM_EMAIL
     #     recipient_list = [self.post.author.email]
-    #
     #     send_mail(subject, message, from_email, recipient_list)
+
+    def get_absolute_url(self):
+        return reverse('posts')
 
     def __str__(self):
         return self.text

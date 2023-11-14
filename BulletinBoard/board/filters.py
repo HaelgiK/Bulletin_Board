@@ -24,7 +24,16 @@ class PostFilter(FilterSet):
             'header',
         ]
 
-        labels = {
-            'header': _('Header'),
-            'author': _('Author'),
-        }
+        # labels = {
+        #     'header': _('Header'),
+        #     'author': _('Author'),
+        # }
+
+# class CommentFilter(FilterSet):
+#     post__header = CharFilter(lookup_expr='icontains', label='Header')
+#
+#     class Meta:
+#         model = Comment
+#         fields = ['post__header', ]
+
+

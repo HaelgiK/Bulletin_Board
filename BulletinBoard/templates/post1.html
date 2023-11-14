@@ -1,0 +1,44 @@
+{% extends 'flatpages/default_1.html' %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+    <h1>Объявление</h1>
+    <h2>{{ post.header }}</h2>
+    <h3>{{ post.content }}</h3>
+    {% if object.image %}
+    <img src="{{ object.image.url }}" alt="{{ object.title }}">
+    {% endif %}
+    {% if object.video_url %}
+    <iframe width="560" height="315" src="{{ object.video_url }}" frameborder="0" allowfullscreen></iframe>
+    {% endif %}
+    <h3>{{ post.date_created|date:'H:m d M Y' }}</h3>
+    <br>
+    <h2>Отклики:</h2>
+    {% if comments %}
+       <table class="table table-bordered">
+           <tr>
+               <td>Текст</td>
+               <td>Дата создания</td>
+               <td>Автор</td>
+           </tr>
+           {% for с in comments %}
+           <tr>
+               <td>{{ с.text }}</td>
+               <td>{{ с.time_create|date:'H:m d M Y' }}</td>
+               <td>{{ с.user }}</td>
+           </tr>
+           {% endfor %}
+       </table>
+    {% else %}
+       <h2>Откликов нет!</h2>
+     {% endif %}
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Подтверждение</button>
+    </form>
+{% endblock content %}

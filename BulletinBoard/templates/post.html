@@ -1,8 +1,6 @@
 {% extends 'flatpages/default_1.html' %}
 {% load i18n %}
 
-{% load custom_filters %}
-
 {% block title %}
 New
 {% endblock title %}
@@ -28,7 +26,6 @@ New
 
            <tr>
                <td>{{ new.date_created|date:'d M Y' }}</td>
-               <td>{{ new.content|censor }}</td>
            </tr>
        </table>
 
