@@ -19,16 +19,17 @@
             </tr>
             {% for post in posts %}
             <tr>
-                <td><a href="{% url 'post_user' post.id %}">{{ post.post_title }}</a></td>
-                <td>{{ post.post_text|truncatechars:20 }}</td>
-                <td>{{ post.category }}</td>
-                <td>{{ post.time_create|date:'H:m d M Y' }}</td>
+                <td><a href="{% url 'post_user' post.id %}">{{ post.header }}</a></td>
+
+                <td>{{ post.content|truncatechars:20 }}</td>
+                <td>{{ post.categories }}</td>
+                <td>{{ post.date_created|date:'H:m d M Y' }}</td>
                 <td>{{ post.user }}</td>
             </tr>
             {% endfor %}
         </table>
         {% else %}
-        <h2>У вас нет объявлений, Вы можете добавить новое</h2>
+        <h2>У вас нет объявлений</h2>
         {% endif %}
     <br>
     <a href="{% url 'post_create' %}">Добавить объявление</a>

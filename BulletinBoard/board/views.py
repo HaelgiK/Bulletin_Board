@@ -129,12 +129,15 @@ class PostDelete(LoginRequiredMixin, DeleteView):
 
 class PostDetailUser(LoginRequiredMixin, DetailView):
     model = Post
-    template_name = 'post_user.html'
+    template_name = 'post1.html'
     context_object_name = 'post_user'
+
+    def get_success_url(self):
+        return reverse('post', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comments = Comment.objects.filter(accepted=True, post_id=self.kwargs['pk']).order_by('time_create')
+        comments = Comment.objects.filter(accepted=True, comment_post_id=self.kwargs['pk']).order_by('time_create')
         context['comments'] = comments
 
         return context
@@ -186,11 +189,11 @@ class CommentDelete(LoginRequiredMixin, DeleteView):
 
 
 @login_required
-def user_posts(request, pk):
+def user_posts(request):
     # Получаем текущего пользователя
     current_user = request.user
     # Получаем текущий пост
-    posts = Post.objects.filter(user=current_user).order_by('-time_create')
+    posts = Post.objects.filter(user=current_user).order_by('-date_created')
     return render(request, 'post_user.html', {'posts': posts})
 
 
@@ -198,18 +201,18 @@ def user_posts(request, pk):
 def user_comments(request):
     current_user = request.user
     posts = Post.objects.filter(user=current_user).order_by('-date_created')
-    selected_post_id = request.GET.get('post')
+    selected_post_id = request.GET.get('comment_post')
 
-    comments = Comment.objects.filter(post__user = current_user).order_by('-time_create')
+    comments = Comment.objects.filter(comment_post__user = current_user).order_by('-time_create')
     if selected_post_id:
-        comments = comments.filter(post__id=selected_post_id)
+        comments = comments.filter(comment_post__id=selected_post_id)
 
     if request.method == 'GET':
-        selected_post_id = request.GET.get('post')
+        selected_post_id = request.GET.get('comment_post')
         if selected_post_id:
-            posts = posts.filter(post__id=selected_post_id)
+            posts = posts.filter(comment_post__id=selected_post_id)
 
-    return render(request, 'post_user.html', {'posts': posts, 'comments': comments, 'selected_bill_id': selected_post_id})
+    return render(request, 'comments_user.html', {'posts': posts, 'comments': comments, 'selected_post_id': selected_post_id})
 
 
 @login_required

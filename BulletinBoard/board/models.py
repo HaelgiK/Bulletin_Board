@@ -34,7 +34,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     text = models.TextField()
     time_create = models.DateTimeField(auto_now_add=True)
-#    comment = models.BooleanField(default=False)
+    comment = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)
 
     # def send_email(self):
