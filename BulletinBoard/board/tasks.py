@@ -35,6 +35,6 @@ def comment_post_send_mail(pk, email):
 @shared_task
 def comment_post_notification(pk):
     comment = Post.objects.get(id=pk)
-    comment_post = comment.post
-    user_email = [comment_post.user.email]
-    comment_post_send_mail(comment_post.pk, user_email)
+    post = comment.post
+    user_email = [post.user.email]
+    comment_post_send_mail(post.pk, user_email)

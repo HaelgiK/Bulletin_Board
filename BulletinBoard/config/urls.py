@@ -22,6 +22,7 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     # путь к панели администратора
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     # перенаправление корневой страницы в приложение protect
     path('', include('board.urls')),
     path('sign/', include('sign.urls')),
