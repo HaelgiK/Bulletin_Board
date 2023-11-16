@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, User
 from .filters import PostFilter
 from .forms import PostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -53,9 +53,8 @@ class PostDetail(DetailView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
-        comments = Comment.objects.filter(id=self.kwargs['pk']).order_by('time_create')
+        comments = Comment.objects.filter(comment_post_id=self.kwargs['pk']).order_by('time_create')
         context['comments'] = comments
-
 
         return context
 
@@ -149,6 +148,10 @@ class CommentList(ListView):
     ordering = '-time_create'
     context_object_name = 'comment_list'
 
+    def get_queryset(self):
+        queryset = Comment.objects.filter(comment_post__user=self.request.user)
+        return queryset
+
     # def get_queryset(self):
     #     # self.category = get_object_or_404(Category, id=self.kwargs['pk'])
     #     # queryset = Post.objects.filter(post_category=self.category).order_by('-date_created')
@@ -177,10 +180,11 @@ class CommentCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.post = Post.objects.get(pk=self.kwargs['pk'])
+        self.object.comment_post = Post.objects.get(pk=self.kwargs['pk'])
         current_user = self.request.user
         self.object.user = current_user
         return super().form_valid(form)
+
 
 class CommentDelete(LoginRequiredMixin, DeleteView):
     model = Comment

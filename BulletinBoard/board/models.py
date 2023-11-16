@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from resources import *
 from django.urls import reverse
 from django.core.mail import send_mail
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -37,12 +38,21 @@ class Comment(models.Model):
     comment = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)
 
-    # def send_email(self):
-    #     subject = 'Отклик на объявление'
-    #     message = 'Здравствуйте!\n\n Новый отклик на ваше объявление "{self.post}".
-    #     from_email = settings.DEFAULT_FROM_EMAIL
-    #     recipient_list = [self.post.author.email]
-    #     send_mail(subject, message, from_email, recipient_list)
+    def send_notification_email(self):
+        subject = 'Отклик на ваше объявление'
+        message = f'Здравствуйте!\n\nНовый отклик на ваше объявление "{self.post}".'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [self.comment_post.user.email]
+
+        send_mail(subject, message, from_email, recipient_list)
+
+    def send_accepted_email(self):
+        subject = 'Ваш отклик принят'
+        message = f'Здравствуйте!\n\nВаш отклик "{self.text[:15]}" принят.'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [self.user.email]
+
+        send_mail(subject, message, from_email, recipient_list)
 
     def get_absolute_url(self):
         return reverse('posts')
