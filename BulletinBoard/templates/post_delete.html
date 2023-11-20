@@ -1,7 +1,7 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'flatpages/default_1.html' %}
 
 {% block content %}
-    <h1>Delete News</h1>
+    <h1>Delete post</h1>
     <hr>
     <form action="" method="post">
         {% csrf_token %}
@@ -20,6 +20,6 @@
    }
    </style>
 <button type="button" class="orange" name="No"
-        onclick="document.location.href='{% url 'post_list' %}'">No</button>
+        onclick="document.location.href='{% url 'posts' %}'">No</button>
 
 {% endblock content %}

@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}
-News
+BulletinBoard
 {% endblock title %}
 
 {% block content %}
@@ -26,16 +26,16 @@ News
    </form>
 
    <hr>
-   {% if posts %}
+   {% if search_post %}
        <table>
            <tr>
                <td><h5>{% trans "Title announcement" %}</h5></td>
-               <td><h5>{% trans "Date created" %}</h5></td>
+               <td><h5>{% trans "Category" %}</h5></td>
            </tr>
-           {% for post in posts %}
+           {% for post in search_post %}
            <tr>
                <td><h6>{{ post.header }}</h6></td>
-               <td>{{ post.date_created|date:'M d Y' }}</td>
+               <td>{{ post.categories }}</td>
            </tr>
            {% endfor %}
 
@@ -51,7 +51,8 @@ News
        <a href="?page=1">1</a>
        {% if page_obj.previous_page_number != 1 %}
            ...
-           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+           <a href="?page={{ page_obj.previous_page_number }}">
+               {{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
 

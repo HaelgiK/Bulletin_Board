@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+#from board.admin import PostAdminForm
 from resources import *
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Category(models.Model):
@@ -18,7 +21,10 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     categories = models.CharField(max_length=2, choices=CATEGORIES, default='TK')
     header = models.CharField(max_length=100)
-    content = models.TextField()
+#    content = models.TextField()
+    content = RichTextUploadingField(verbose_name='Контент')
+
+#    form = PostAdminForm
 
     def preview(self):
         return self.content[:124] + '...' if len(self.content) > 124 else self.content

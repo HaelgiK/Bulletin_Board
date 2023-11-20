@@ -8,14 +8,14 @@ Comments
 {% block content %}
 <h1>Все отклики</h1>
 <hr>
-{% if comments %}
+{% if comment_list %}
        <table class="table table-bordered">
            <tr>
                <td>Текст</td>
                <td>Дата создания</td>
                <td>Автор</td>
            </tr>
-           {% for c in comments %}
+           {% for c in comment_list %}
            <tr>
                <td>{{ c.text }}</td>
                <td>{{ c.time_create|date:'H:m d M Y' }}</td>

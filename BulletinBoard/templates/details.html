@@ -1,15 +1,17 @@
-{% load custom_filters %}
-<h3>
-    <a href="{% url 'news:details' post.id %}">
-    {{ post.header|censor }}
-    </a>
-</h3>
+{% extends 'flatpages/default_1.html' %}
 
-<p class="details">
-    By <span class="author">{{post.author}}</span>
-    on <span class="date">{{post.created_at}}</span>
-    Category:
-    {% for c in post.category.values %}
-    <a href="{% url 'news:category' c.id %}" class="category">{{c.name}}</a>
-    {% endfor %}
-</p>
+{% block content %}
+<h1>Комментарий</h1>
+<hr>
+<small class="fw-bold">Дата публикации: {{ comment.time_create | date:"d.m.Y" }}</small>
+    <small class="text-muted">Автор: {{ comment.user }}</small>
+    <small class="fw-bold">Объявление: "{{ comment.comment_post.header }}"</small>
+    <p>{{ comment.text | safe }}</p>
+    <style>
+    /* Стили кнопки */
+    .main_button_del{display: inline-block;cursor: pointer; font-size:15px;text-decoration:none;padding:10px 10px; color:#000000;background:#FFFAFA;border-radius:5px;border:1px solid #000000;}
+    .main_button_del:hover{background:#ff5454;color:#ffffff;border:1px solid #000000;transition: all 0.2s ease;}
+    </style>
+    <a class="main_button_del" href="{% url 'comment_list' %}" title="Вернуться">Вернуться</a>
+    <hr>
+{% endblock content %}

@@ -75,9 +75,10 @@ class PostDetail(DetailView):
 
 class SearchPost(ListView):
     model = Post
-    ordering = '-date_created'
+#    ordering = '-date_created'
     template_name = 'search.html'
     context_object_name = 'search_post'
+#    filterset_class = PostFilter
     paginate_by = 5
 
     def get_queryset(self):
@@ -136,7 +137,8 @@ class PostDetailUser(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comments = Comment.objects.filter(accepted=True, comment_post_id=self.kwargs['pk']).order_by('time_create')
+        comments = Comment.objects.filter(accepted=True,
+                                          comment_post_id=self.kwargs['pk']).order_by('time_create')
         context['comments'] = comments
 
         return context
@@ -169,7 +171,7 @@ class CommentList(ListView):
 
 class CommentDetail(DetailView):
     model = Comment
-    template_name = 'comments.html'
+    template_name = 'details.html'
     context_object_name = 'comment'
 
 
@@ -216,7 +218,8 @@ def user_comments(request):
         if selected_post_id:
             posts = posts.filter(comment_post__id=selected_post_id)
 
-    return render(request, 'comments_user.html', {'posts': posts, 'comments': comments, 'selected_post_id': selected_post_id})
+    return render(request, 'comments_user.html',
+                  {'posts': posts, 'comments': comments, 'selected_post_id': selected_post_id})
 
 
 @login_required

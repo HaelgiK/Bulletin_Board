@@ -1,5 +1,5 @@
 import django_filters
-from django_filters import FilterSet, CharFilter
+from django_filters import FilterSet, CharFilter, ModelChoiceFilter
 
 from .forms import *
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +12,16 @@ class PostFilter(FilterSet):
         lookup_expr='icontains',
         label=_('Header'),
     )
+    # categories = ModelChoiceFilter(
+    #     queryset=Category.objects.all(),
+    #     label='Category',
+    #     empty_label='any'
+    # )
+    def __init__(self, *args, **kwargs):
+        category_choices = kwargs.pop('category_choices', None)
+        super().__init__(*args, **kwargs)
+        if category_choices:
+            self.fields['categories'].queryset = category_choices
 
     class Meta:
         # В Meta классе мы должны указать Django модель,
@@ -22,6 +32,7 @@ class PostFilter(FilterSet):
         fields = [
             # поиск по названию
             'header',
+            'categories',
         ]
 
         # labels = {

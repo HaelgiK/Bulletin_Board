@@ -2,19 +2,19 @@
 
 <html>
 <head>
-<title>{% block title %}Отклики на мои объявления{% endblock title %}</title>
+<title>{% block title %}Responses to my advertisements{% endblock title %}</title>
 </head>
 <body>
 {% block content %}
-    <h2 style="text-align: center;">Отклики на мои объявления</h2>
+    <h2 style="text-align: center;">Responses to my advertisements</h2>
     <form method="get">
         <select name="post">
-            <option value="">Все объявления</option>
+            <option value="">All announcements</option>
             {% for post in posts %}
-                <option value="{{ post.pk }}" {% if selected_post_id == post.pk %}selected{% endif %}>{{ post.post_title }}</option>
+                <option value="{{ post.pk }}" {% if selected_post_id == post.pk %}selected{% endif %}>{{ post.header }}</option>
             {% endfor %}
         </select>
-        <button type="submit">Фильтр</button>
+        <button type="submit">Filter</button>
     </form>
     <hr>
         {% if comments %}
@@ -29,7 +29,7 @@
             </tr>
             {% for comment in comments %}
             <tr>
-                <td>{{ comment.post }}</td>
+                <td>{{ comment.comment_post }}</td>
                 <td>{{ comment.text }}</td>
                 <td>{{ comment.time_create|date:'H:m d M Y' }}</td>
                 <td>{{ comment.user }}</td>
@@ -37,10 +37,10 @@
                     {% if comment.accepted %}
                         Отклик уже принят
                     {% else %}
-                    <a href="{% url 'accept_reply' reply.id %}">Принять</a>
+                    <a href="?page=1">Принять</a>
                     {% endif %}
                 </td>
-                <td><a href="{% url 'reply_delete' reply.id %}">Удалить</a></td>
+                <td><a href="?page=1">Удалить</a></td>
             </tr>
             {% endfor %}
         </table>

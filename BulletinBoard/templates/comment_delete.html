@@ -1,11 +1,11 @@
 {% extends 'flatpages/default_1.html' %}
 
 {% block content %}
-    <h1>Delete News</h1>
+    <h1>Delete Comment</h1>
     <hr>
     <form action="" method="post">
         {% csrf_token %}
-        <p>Delete "{{ object.header }}"?</p>
+        <p>Delete "{{ object.comment_post }}"?</p>
         <input type="submit" value="Delete" />
 
     </form>
@@ -20,6 +20,6 @@
    }
    </style>
 <button type="button" class="orange" name="No"
-        onclick="document.location.href='{% url 'post_list' %}'">No</button>
+        onclick="document.location.href='{% url 'comment_list' %}'">No</button>
 
 {% endblock content %}
