@@ -8,12 +8,3 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 admin.site.register(Comment)
 admin.site.register(Post)
-
-
-
-
-# class PostAdminForm(forms.ModelForm):
-#     content = forms.CharField(widget=CKEditorUploadingWidget())
-#     class Meta:
-#         model = Post
-#         fields = '__all__'

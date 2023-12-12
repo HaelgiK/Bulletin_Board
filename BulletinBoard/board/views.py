@@ -154,20 +154,6 @@ class CommentList(ListView):
         queryset = Comment.objects.filter(comment_post__user=self.request.user)
         return queryset
 
-    # def get_queryset(self):
-    #     # self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-    #     # queryset = Post.objects.filter(post_category=self.category).order_by('-date_created')
-    #     # return queryset
-    #     queryset = super().get_queryset()
-    #     self.filterset = CommentFilter(self.request.GET, queryset)
-    #     return self.filterset.qs
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     # Добавляем в контекст объект фильтрации.
-    #     context['filterset'] = self.filterset
-    #     return context
-
 
 class CommentDetail(DetailView):
     model = Comment

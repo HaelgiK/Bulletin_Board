@@ -20,7 +20,6 @@ app.conf.beat_schedule = {
     'every_monday_task': {
         'task': 'board.tasks.weekly_mailing',
         'schedule': crontab(hour=8, minute=00, day_of_week='monday'),
-#        'schedule': crontab(),
     }
 }
 

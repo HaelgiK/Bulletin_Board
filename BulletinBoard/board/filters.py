@@ -12,11 +12,7 @@ class PostFilter(FilterSet):
         lookup_expr='icontains',
         label=_('Header'),
     )
-    # categories = ModelChoiceFilter(
-    #     queryset=Category.objects.all(),
-    #     label='Category',
-    #     empty_label='any'
-    # )
+
     def __init__(self, *args, **kwargs):
         category_choices = kwargs.pop('category_choices', None)
         super().__init__(*args, **kwargs)
@@ -34,17 +30,3 @@ class PostFilter(FilterSet):
             'header',
             'categories',
         ]
-
-        # labels = {
-        #     'header': _('Header'),
-        #     'author': _('Author'),
-        # }
-
-# class CommentFilter(FilterSet):
-#     post__header = CharFilter(lookup_expr='icontains', label='Header')
-#
-#     class Meta:
-#         model = Comment
-#         fields = ['post__header', ]
-
-
